@@ -210,6 +210,19 @@ class KLogger
         $this->log($line, self::DEBUG);
     }
 
+    public function logSql($msg, $sql, $params=null) {
+
+      if ( $params == null ) {
+	$params = array();
+      }
+
+      $fixed_sql = $sql;
+      foreach( $params as $key=>$value ) {
+	$fixed_sql = str_replace(":".$key, "'".$value."'", $fixed_sql);
+      }
+      $this->logDebug($msg." : ".$fixed_sql);
+    }
+
     /**
      * Returns (and removes) the last message from the queue.
      * @return string
